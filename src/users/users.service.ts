@@ -5,9 +5,12 @@ import { IUser} from './interfaces/iusers.interface';
 import { IUsersService } from './interfaces/iusers.service';
 import { debug } from 'console';
 import { CreateUserDto } from './dto/createUser.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService implements IUsersService {
+    private readonly saltRounds = 10;
+
     constructor(@InjectModel('User') private readonly userModel: Model<IUser>){
     }
 
@@ -25,6 +28,7 @@ export class UsersService implements IUsersService {
 
     async create(createUserDto: CreateUserDto):Promise<IUser>{
         const createdUser = new this.userModel(createUserDto);
+        createdUser.password = await bcrypt.hash(createdUser.password,this.saltRounds);
         return await createdUser.save();
     }
 
