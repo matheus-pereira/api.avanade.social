@@ -10,23 +10,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const swagger_1 = require("@nestjs/swagger");
-class CreateUserDto {
+class LoginUserDto {
 }
 __decorate([
     swagger_1.ApiModelProperty(),
     __metadata("design:type", String)
-], CreateUserDto.prototype, "name", void 0);
+], LoginUserDto.prototype, "email", void 0);
 __decorate([
     swagger_1.ApiModelProperty(),
     __metadata("design:type", String)
-], CreateUserDto.prototype, "email", void 0);
+], LoginUserDto.prototype, "password", void 0);
+exports.LoginUserDto = LoginUserDto;
+class ValidateTokenDto {
+}
 __decorate([
     swagger_1.ApiModelProperty(),
     __metadata("design:type", String)
-], CreateUserDto.prototype, "password", void 0);
-__decorate([
-    swagger_1.ApiModelProperty(),
-    __metadata("design:type", Date)
-], CreateUserDto.prototype, "timestamp", void 0);
-exports.CreateUserDto = CreateUserDto;
-//# sourceMappingURL=createUser.dto.js.map
+], ValidateTokenDto.prototype, "token", void 0);
+exports.ValidateTokenDto = ValidateTokenDto;
+//# sourceMappingURL=auth.dto.js.map

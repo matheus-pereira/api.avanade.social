@@ -24,9 +24,11 @@ const mongoose_1 = require("mongoose");
 const common_1 = require("@nestjs/common");
 const mongoose_2 = require("@nestjs/mongoose");
 const console_1 = require("console");
+const bcrypt = require("bcrypt");
 let UsersService = class UsersService {
     constructor(userModel) {
         this.userModel = userModel;
+        this.saltRounds = 10;
     }
     findAll() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -46,6 +48,7 @@ let UsersService = class UsersService {
     create(createUserDto) {
         return __awaiter(this, void 0, void 0, function* () {
             const createdUser = new this.userModel(createUserDto);
+            createdUser.password = yield this.getHash(createdUser.password);
             return yield createdUser.save();
         });
     }
@@ -68,6 +71,16 @@ let UsersService = class UsersService {
                 console_1.debug(error);
                 return 'The user could not be deleted.';
             }
+        });
+    }
+    getHash(password) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return bcrypt.hash(password, this.saltRounds);
+        });
+    }
+    compareHash(password, hash) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return bcrypt.compare(password, hash);
         });
     }
 };

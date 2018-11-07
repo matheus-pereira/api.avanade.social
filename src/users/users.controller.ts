@@ -1,8 +1,10 @@
-import { Controller, Get, Response, HttpStatus, Param, Body, Post, Request, Patch, Delete } from '@nestjs/common';
+import { Controller, Get, Response, HttpStatus, Param, Body, Post, Headers, Patch, Delete, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ApiResponse, ApiUseTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/createUser.dto';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard())
 @ApiUseTags('users')
 @Controller('users')
 export class UsersController {
@@ -45,7 +47,6 @@ export class UsersController {
 
     @Delete('/:id')
     public async deleteUser(@Param() param, @Response() res) {
-
         const user = await this.usersService.delete(param.id);
         return res.status(HttpStatus.OK).json(user);
     }

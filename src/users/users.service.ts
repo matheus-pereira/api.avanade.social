@@ -28,7 +28,7 @@ export class UsersService implements IUsersService {
 
     async create(createUserDto: CreateUserDto):Promise<IUser>{
         const createdUser = new this.userModel(createUserDto);
-        createdUser.password = await bcrypt.hash(createdUser.password,this.saltRounds);
+        createdUser.password = await this.getHash(createdUser.password);
         return await createdUser.save();
     }
 
@@ -50,6 +50,14 @@ export class UsersService implements IUsersService {
             debug(error);
             return 'The user could not be deleted.'
         }
+    }
+
+    async getHash(password: string):Promise<string>{
+        return bcrypt.hash(password,this.saltRounds);
+    }
+
+    async compareHash(password:string, hash:string):Promise<boolean>{
+        return bcrypt.compare(password,hash);
     }
 
 }

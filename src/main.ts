@@ -10,6 +10,8 @@ async function bootstrap() {
   .setDescription('Descrição da API utilizada no projeto Avanade Social')
   .setVersion('1.0')
   .addTag('users')
+  .addTag('auth')
+  .addTag('posts')
   .build();
 
   const document = SwaggerModule.createDocument(app, options);

@@ -3,9 +3,6 @@ import { ApiModelProperty } from '@nestjs/swagger';
 export class CreateUserDto {
 
     @ApiModelProperty()
-    readonly _id: string;
-
-    @ApiModelProperty()
     readonly name: string;
 
     @ApiModelProperty()
