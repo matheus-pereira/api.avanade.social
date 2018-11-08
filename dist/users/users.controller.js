@@ -68,7 +68,6 @@ let UsersController = class UsersController {
     }
 };
 __decorate([
-    common_1.UseGuards(passport_1.AuthGuard()),
     common_1.Get(),
     __param(0, common_1.Response()),
     __metadata("design:type", Function),
@@ -113,6 +112,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "deleteUser", null);
 UsersController = __decorate([
+    common_1.UseGuards(passport_1.AuthGuard()),
     swagger_1.ApiUseTags('users'),
     common_1.Controller('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService])

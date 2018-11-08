@@ -8,5 +8,5 @@ export declare class AuthService {
         token: string;
     }>;
     validateUser(email: string): Promise<boolean>;
-    validateToken(token: string): Promise<string | object>;
+    validateToken(payload: any): Promise<string | object>;
 }

@@ -32,7 +32,7 @@ export class UsersService implements IUsersService {
         return await createdUser.save();
     }
 
-    async update(ID:string, newValue: IUser):Promise<IUser>{
+    async update(ID:string, newValue: CreateUserDto):Promise<IUser>{
         const user = await this.userModel.findById(ID).exec();
 
         if(!user.id){

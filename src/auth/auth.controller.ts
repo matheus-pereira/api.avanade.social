@@ -28,16 +28,10 @@ export class AuthController {
         return res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Wrong combination of email and password.' });
     }
 
-    @Post('register')
-    @ApiResponse({ status: 201, description: 'The record has been successfully created.' })
-    @ApiResponse({ status: 403, description: 'Forbidden.' })
-    public async createUser(@Response() res, @Body() createUserDTO: CreateUserDto) {
-
-        const user = await this.userService.create(createUserDTO);
-        return res.status(HttpStatus.OK).json(user);
-    }
-
     @Post('validateToken')
+    @ApiResponse({ status: 200, description: 'Authentication successfull.' })
+    @ApiResponse({ status: 403, description: 'Wrong combination of email and password.' })
+    @ApiResponse({ status: 500, description: 'Internal server error.' })
     public async validateToken(@Response() res, @Body() validateTokenDTO: ValidateTokenDto){
         let token = validateTokenDTO.token;
         if(!token){

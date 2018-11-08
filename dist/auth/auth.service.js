@@ -38,10 +38,9 @@ let AuthService = class AuthService {
             return Boolean(this.userService.findOne({ email }));
         });
     }
-    validateToken(token) {
+    validateToken(payload) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(token);
-            return jwt.verify(token, this.secretKey);
+            return jwt.verify(payload.token, this.secretKey);
         });
     }
 };

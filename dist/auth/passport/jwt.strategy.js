@@ -8,14 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const passport_1 = require("@nestjs/passport");
 const passport_jwt_1 = require("passport-jwt");
@@ -25,19 +17,21 @@ let JwtStrategy = class JwtStrategy extends passport_1.PassportStrategy(passport
     constructor(authService) {
         super({
             jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
-            passReqToCallback: true,
             secretOrKey: 'secretKey',
+            passReqToCallback: true,
         });
         this.authService = authService;
     }
-
-
-    async validate(payload) {
-    const user = await this.authService.validateToken(payload);
-    if (!user) {
-        throw new UnauthorizedException();
+    validate(payload) {
+        if (payload) {
+            return payload;
+        }
+        return false;
     }
-    return user;
-    }
-
 };
+JwtStrategy = __decorate([
+    common_1.Injectable(),
+    __metadata("design:paramtypes", [auth_service_1.AuthService])
+], JwtStrategy);
+exports.JwtStrategy = JwtStrategy;
+//# sourceMappingURL=jwt.strategy.js.map

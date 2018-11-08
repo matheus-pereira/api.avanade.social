@@ -1,4 +1,4 @@
-import { Controller, Get, Response, HttpStatus, Param, Body, Post, Headers, Patch, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Response, HttpStatus, Param, Body, Post, Headers, Patch, Delete, UseGuards, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ApiResponse, ApiUseTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/createUser.dto';
@@ -32,15 +32,13 @@ export class UsersController {
     @Post()
     @ApiResponse({ status: 201, description: 'The record has been successfully created.' })
     @ApiResponse({ status: 403, description: 'Forbidden.' })
-    public async createUser(@Response() res, @Body() createUserDTO: CreateUserDto) {
-
-        const user = await this.usersService.create(createUserDTO);
+    public async createUser(@Response() res, @Body() body: CreateUserDto) {
+        const user = await this.usersService.create(body);
         return res.status(HttpStatus.OK).json(user);
     }
 
     @Patch('/:id')
-    public async updateUser(@Param() param, @Response() res, @Body() body) {
-
+    public async updateUser(@Param() param, @Response() res, @Body() body: CreateUserDto) {
         const user = await this.usersService.update(param.id, body);
         return res.status(HttpStatus.OK).json(user);
     }

@@ -16,7 +16,10 @@ let UsersModule = class UsersModule {
 };
 UsersModule = __decorate([
     common_1.Module({
-        imports: [mongoose_1.MongooseModule.forFeature([{ name: 'User', schema: users_schema_1.UserSchema }]), passport_1.PassportModule.register({ defaultStrategy: 'jwt' })],
+        imports: [
+            mongoose_1.MongooseModule.forFeature([{ name: 'User', schema: users_schema_1.UserSchema }]),
+            passport_1.PassportModule.register({ defaultStrategy: 'jwt' })
+        ],
         controllers: [users_controller_1.UsersController],
         providers: [users_service_1.UsersService]
     })

@@ -20,6 +20,7 @@ function bootstrap() {
             .setVersion('1.0')
             .addTag('users')
             .addTag('auth')
+            .addTag('posts')
             .build();
         const document = swagger_1.SwaggerModule.createDocument(app, options);
         swagger_1.SwaggerModule.setup('api', app, document);

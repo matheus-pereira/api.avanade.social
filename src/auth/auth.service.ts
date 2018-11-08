@@ -18,11 +18,11 @@ export class AuthService {
     }
 
     async validateUser(email:string){
-        return Boolean(this.userService.findOne({email}));
+        return this.userService.findOne({email});
     }
 
-    async validateToken(payload){
-        return jwt.verify(payload.token, this.secretKey)
+    async validateToken(token){
+        return jwt.verify(token, this.secretKey)
     }
     
 

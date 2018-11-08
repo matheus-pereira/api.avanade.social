@@ -10,15 +10,20 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         secretOrKey: 'secretKey',
-        passReqToCallback: true,
+        passReqToCallback: true
       },
     );
   }
 
-  public validate(payload){
-    if(payload){
-      return payload;
+  async validate(req: Request, payload, done: Function) {
+    const user = await this.authService.validateUser(payload.email);
+    if (!user) {
+      return done(new UnauthorizedException(), false);
+    }else{
+      payload.id = user._id
+      payload.name = user.name
+      return done(null, payload);
     }
-    return false;
+    
   }
 }

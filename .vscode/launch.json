@@ -10,37 +10,24 @@
             "name": "Launch via NPM",
             "runtimeExecutable": "npm",
             "runtimeArgs": [
-                "run",
-                "start"
+                "npm start"
             ],
-            "port": 3000
-        },
-        {
-            "type": "node",
-            "request": "attach",
-            "name": "Attach",
-            "port": 3000
+            "port": 9229
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}\\src\\main.ts",
+            "name": "Nest Debug",
+            "protocol": "inspector",
+            "sourceMaps": true,
+            "stopOnEntry": true,
+            "console": "internalConsole",
+            "program": "${workspaceFolder}/src/main.ts",
             "preLaunchTask": "tsc: build - tsconfig.json",
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"
-            ]
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Jest Tests",
-            "program": "${workspaceRoot}\\node_modules\\jest\\bin\\jest.js",
-            "args": [
-                "-i"
             ],
-            "internalConsoleOptions": "openOnSessionStart",
-            "showAsyncStacks": true
-        }
+            "runtimeExecutable": "node"
+        },
     ]
 }

@@ -12,10 +12,11 @@ import { PostsModule } from './posts/posts.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/avanade'),
+    MongooseModule.forRoot('mongodb://localhost/avanade', { useNewUrlParser: true }),
     PassportModule,
     UsersModule,
     AuthModule,
+    PostsModule, 
   ],
   controllers: [AppController],
   providers: [AppService],
