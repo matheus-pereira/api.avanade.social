@@ -13,6 +13,7 @@ exports.users = mongoose.model('user', new mongoose.Schema({
 exports.posts = mongoose.model('post', new mongoose.Schema({
     text: String,
     imagePath: String,
+    user: { id: String, name: String },
     likes: [{ userId: String, userName: String }],
     created: Date
 }));
