@@ -12,7 +12,7 @@ import { PostsModule } from './posts/posts.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/avanade', { useNewUrlParser: true }),
+    MongooseModule.forRoot('mongodb+srv://avanade:avanade@mongodb-ejmu6.azure.mongodb.net/development', { useNewUrlParser: true }),
     PassportModule,
     UsersModule,
     AuthModule,
