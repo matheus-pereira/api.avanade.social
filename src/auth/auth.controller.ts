@@ -1,7 +1,6 @@
-import { Controller, Post, Body, Response, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Response, HttpStatus, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UsersService } from 'src/users/users.service';
-import { CreateUserDto } from 'src/users/dto/createUser.dto';
 import { ApiResponse, ApiUseTags } from '@nestjs/swagger';
 import { LoginUserDto, ValidateTokenDto } from './dto/auth.dto';
 
@@ -22,7 +21,7 @@ export class AuthController {
         const user = await this.userService.findOne({ email: loginUserDTO.email });
         if (user) {
             if (await this.userService.compareHash(loginUserDTO.password, user.password)) {
-                return res.status(HttpStatus.OK).json(await this.authService.createToken(user.email));
+                return res.status(HttpStatus.OK).json(await this.authService.createToken(user.email, user.name));
             }
         }
         return res.status(HttpStatus.UNAUTHORIZED).json({ message: 'Wrong combination of email and password.' });
