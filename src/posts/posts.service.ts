@@ -52,7 +52,6 @@ export class PostsService implements IPostService {
         async likePost(ID:string,user:{id:string, name:string}){
             const post = await this.postModel.findById(ID).exec();
             let index = post.likes.findIndex( like => like.id == user.id);
-            console.log('index',index);
             if(index < 0){
                 post.likes.push({id: user.id, name: user.name});
                 return post.save();
@@ -63,8 +62,6 @@ export class PostsService implements IPostService {
 
         async unlikePost(ID:string, userID: string){
             const post = await this.postModel.findById(ID).exec();
-            console.log('post',post);
-            console.log('userid',userID);
             let index = post.likes.findIndex( like => like.id == userID);
             if(index >= 0){
                 post.likes.splice(index,1);
