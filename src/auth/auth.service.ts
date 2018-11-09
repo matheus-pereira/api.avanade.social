@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import * as jwt from 'jsonwebtoken';
+import { enviroment } from 'src/enviroment';
 
 @Injectable()
 export class AuthService {
 
-    private secretKey = '6787225D3AF59F9954E9E6AST349CCF81F6352E7A8A4455EA27941C76593FA25';
+    private secretKey = enviroment.secretKey;
 
     constructor(private readonly userService: UsersService) { }
 
