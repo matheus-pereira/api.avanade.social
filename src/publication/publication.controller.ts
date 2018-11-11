@@ -60,7 +60,7 @@ export class PublicationController {
                 if (!IsDate(fromDate)) {
                     throw new HttpException('Invalid date format', HttpStatus.BAD_REQUEST);
                 }
-                
+
                 filter['createdAt'] = { $lte: new Date(fromDate) };
             }
 
@@ -74,6 +74,30 @@ export class PublicationController {
 
             const publications = await this._publicationService.findPublications(filter);
             return this._publicationService.map<PublicationVm[]>(map(publications, pub => pub.toJSON()), true);
+        } catch (e) {
+            throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Put(':id/like')
+    @UseGuards(AuthGuard('jwt'))
+    async likePublication(@Req() request, @Param('id') publicationId: string): Promise<PublicationVm> {
+        try {
+            const user = { id: request.user.id, name: request.user.firstName };
+            const result = await this._publicationService.likePublication(publicationId, user);
+            return result
+        } catch (e) {
+            throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Put(':id/unlike')
+    @UseGuards(AuthGuard('jwt'))
+    async unlikePublication(@Req() request, @Param('id') publicationId: string): Promise<PublicationVm> {
+        try {
+            const user = { id: request.user.id, name: request.user.firstName };
+            const result = await this._publicationService.unlikePublication(publicationId, user);
+            return result;
         } catch (e) {
             throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }

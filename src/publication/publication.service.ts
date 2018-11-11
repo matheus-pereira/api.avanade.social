@@ -39,4 +39,34 @@ export class PublicationService extends BaseService<Publication> {
     async findPublications(filter) {
         return this._model.find(filter).limit(10).sort({ createdAt: -1 }).exec();
     }
+
+    async likePublication(publicationId: string, user: UserResumeVm): Promise<Publication> {
+        try {
+            const publication = await this._model.findById(publicationId).exec();
+            const index = publication.likes.findIndex(like => like.id == user.id);
+            if (index < 0) {
+                publication.likes.push(user);
+                const result = await this._model.findByIdAndUpdate(publicationId, { $set: { likes: publication.likes } }, { new: true }).exec();
+                return result;
+            }
+            return null;
+        } catch (e) {
+            throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    async unlikePublication(publicationId: string, user: UserResumeVm): Promise<Publication> {
+        try {
+            const publication = await this._model.findById(publicationId).exec();
+            const index = publication.likes.findIndex(like => like.id == user.id);
+            if (index >= 0) {
+                publication.likes.splice(index, 1);
+                const result = await this._model.findByIdAndUpdate(publicationId, { $set: { likes: publication.likes } }, { new: true }).exec();
+                return result;
+            }
+            return null;
+        } catch (e) {
+            throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
