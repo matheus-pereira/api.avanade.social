@@ -37,7 +37,6 @@ export class PublicationService extends BaseService<Publication> {
     }
 
     async findPublications(filter) {
-        console.log(filter)
         return this._model.find(filter).limit(10).sort({ createdAt: -1 }).exec();
     }
 }
