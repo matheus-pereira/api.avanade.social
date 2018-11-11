@@ -1,24 +1,39 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MongooseModule } from '@nestjs/mongoose';
-import { UsersModule } from './users/users.module';
-import { AuthService } from './auth/auth.service';
-import { AuthController } from './auth/auth.controller';
-import { UserSchema } from './users/schemas/users.schema';
-import { AuthModule } from './auth/auth.module';
-import { PassportModule } from '@nestjs/passport';
-import { PostsModule } from './posts/posts.module';
+import { SharedModule } from './shared/shared.module';
+import { ConfigurationService } from './shared/configuration/configuration.service';
+import { Configuration } from './shared/configuration/configuration.enum';
+import { UserModule } from './user/user.module';
+import { PublicationModule } from './publication/publication.module';
+
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb+srv://avanade:avanade@mongodb-ejmu6.azure.mongodb.net/development', { useNewUrlParser: true }),
-    PassportModule,
-    UsersModule,
-    AuthModule,
-    PostsModule, 
+    SharedModule,
+    MongooseModule.forRoot(ConfigurationService.connectionString, { useNewUrlParser: true, useCreateIndex: true }),
+    UserModule,
+    PublicationModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+
+  static host: string;
+  static port: string | number;
+  static isDev: boolean;
+
+  constructor(private readonly _configurationService: ConfigurationService) {
+    AppModule.port = AppModule.normalizePort(_configurationService.get(Configuration.PORT));
+    AppModule.host = _configurationService.get(Configuration.HOST);
+    AppModule.isDev = _configurationService.isDevelopment();
+  }
+
+  private static normalizePort(param: number | string): number | string {
+    const portNumber: number = typeof param === 'string' ? parseInt(param, 10) : param;
+    if (isNaN(portNumber)) return param;
+    else if (portNumber >= 0) return param;
+  }
+}

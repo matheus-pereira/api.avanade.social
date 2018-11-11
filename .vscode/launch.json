@@ -7,27 +7,15 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch via NPM",
+            "name": "Launch NestJS",
             "runtimeExecutable": "npm",
             "runtimeArgs": [
-                "npm start"
+                "run-script",
+                "start:dev"
             ],
-            "port": 9229
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Nest Debug",
-            "protocol": "inspector",
-            "sourceMaps": true,
-            "stopOnEntry": true,
-            "console": "internalConsole",
-            "program": "${workspaceFolder}/src/main.ts",
-            "preLaunchTask": "tsc: build - tsconfig.json",
-            "outFiles": [
-                "${workspaceFolder}/dist/**/*.js"
-            ],
-            "runtimeExecutable": "node"
-        },
+            "port": 5000,
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        }
     ]
 }
