@@ -22,10 +22,14 @@ export class User extends BaseModel<User> {
     password: string;
 
     @prop()
+    avatar?: string;
+
+    @prop({ required: [true, 'First name is required'] })
     firstName: string;
 
     @prop()
     lastName?: string;
+    
 
     @prop()
     get fullName(): string {

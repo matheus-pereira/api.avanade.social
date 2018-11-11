@@ -6,11 +6,10 @@ import { AuthGuard } from '@nestjs/passport';
 import { Publication } from './models/publication.model';
 import { PublicationService } from './publication.service';
 import { PublicationVm } from './models/view-models/publication-vm.model';
-import { UserResumeVm } from 'src/user/models/view-models/user-resume-vm.model';
 import { PublicationParams } from './models/view-models/publication-params.model';
 import { map } from 'lodash';
-import { Types } from 'mongoose';
 import { IsDate } from 'src/shared/utilities/is-date';
+import { User } from 'src/user/models/user.model';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('publications')
@@ -30,9 +29,7 @@ export class PublicationController {
             throw new HttpException('Publication text is required', HttpStatus.BAD_REQUEST);
         }
 
-        const user = new UserResumeVm();
-        user.id = request.user._id;
-        user.name = request.user.fullName;
+        const user = request.user as User;
 
         try {
             const newPublication = await this._publicationService.createPublication(user, text, imagePath);
@@ -60,15 +57,15 @@ export class PublicationController {
                 if (!IsDate(fromDate)) {
                     throw new HttpException('Invalid date format', HttpStatus.BAD_REQUEST);
                 }
-
+                
                 filter['createdAt'] = { $lte: new Date(fromDate) };
             }
 
             if (userId) {
                 if (filter['fromDate']) {
-                    filter = { $and: [{ createdAt: filter['fromDate'] }, { 'user.id': Types.ObjectId(userId) }] }
+                    filter = { $and: [{ createdAt: filter['fromDate'] }, { 'user.id': userId }] }
                 } else {
-                    filter['user.id'] = Types.ObjectId(userId);
+                    filter['user.id'] = userId;
                 }
             }
 
@@ -81,11 +78,11 @@ export class PublicationController {
 
     @Put(':id/like')
     @UseGuards(AuthGuard('jwt'))
-    async likePublication(@Req() request, @Param('id') publicationId: string): Promise<PublicationVm> {
+    async like(@Req() request, @Param('id') publicationId: string): Promise<PublicationVm> {
+        const { user } = request;
+
         try {
-            const user = { id: request.user.id, name: request.user.firstName };
-            const result = await this._publicationService.likePublication(publicationId, user);
-            return result
+            return this._publicationService.like(publicationId, user);
         } catch (e) {
             throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -93,65 +90,13 @@ export class PublicationController {
 
     @Put(':id/unlike')
     @UseGuards(AuthGuard('jwt'))
-    async unlikePublication(@Req() request, @Param('id') publicationId: string): Promise<PublicationVm> {
+    async unlike(@Req() request, @Param('id') publicationId: string): Promise<PublicationVm> {
+        const { user } = request;
+
         try {
-            const user = { id: request.user.id, name: request.user.firstName };
-            const result = await this._publicationService.unlikePublication(publicationId, user);
-            return result;
+            return this._publicationService.unlike(publicationId, user);
         } catch (e) {
             throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    // @Put(':id/likes')
-    // @UseGuards(AuthGuard('jwt'))
-    // @ApiResponse({ status: HttpStatus.CREATED, type: TodoVm })
-    // @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
-    // @ApiOperation(GetOperationId(Todo.modelName, 'Update'))
-    // async update(@Body() vm: TodoVm): Promise<TodoVm> {
-    //     const { id, content, level, isCompleted } = vm;
-
-    //     if (!vm || !id) {
-    //         throw new HttpException('Missing parameters', HttpStatus.BAD_REQUEST);
-    //     }
-
-    //     let exist;
-    //     try {
-    //         exist = await this._todoService.findById(id);
-    //     } catch (e) {
-    //         throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
-    //     }
-
-    //     if (!exist) {
-    //         throw new HttpException(`${id} Not found`, HttpStatus.NOT_FOUND);
-    //     }
-
-    //     if (exist.isCompleted) {
-    //         throw new HttpException(`Already completed`, HttpStatus.BAD_REQUEST);
-    //     }
-
-    //     exist.content = content;
-    //     exist.isCompleted = isCompleted;
-    //     exist.level = level;
-    //     try {
-    //         const updated = await this._todoService.update(id, exist);
-    //         return this._todoService.map<TodoVm>(updated.toJSON());
-    //     } catch (e) {
-    //         throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
-    //     }
-    // }
-
-    // @Delete(':id')
-    // @UseGuards(AuthGuard('jwt'))
-    // @ApiResponse({ status: HttpStatus.OK, type: TodoVm })
-    // @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
-    // @ApiOperation(GetOperationId(Todo.modelName, 'Delete'))
-    // async delete(@Param('id') id: string): Promise<TodoVm> {
-    //     try {
-    //         const deleted = await this._todoService.delete(id);
-    //         return this._todoService.map<TodoVm>(deleted.toJSON());
-    //     } catch (e) {
-    //         throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
-    //     }
-    // }
 }

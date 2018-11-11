@@ -7,4 +7,6 @@ export class UserResumeVm {
 
     @ApiModelProperty()
     name: string;
+
+    avatar?: string;
 }

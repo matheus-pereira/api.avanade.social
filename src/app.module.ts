@@ -1,13 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { SharedModule } from './shared/shared.module';
 import { ConfigurationService } from './shared/configuration/configuration.service';
 import { Configuration } from './shared/configuration/configuration.enum';
 import { UserModule } from './user/user.module';
 import { PublicationModule } from './publication/publication.module';
-
 
 @Module({
   imports: [
@@ -15,12 +12,9 @@ import { PublicationModule } from './publication/publication.module';
     MongooseModule.forRoot(ConfigurationService.connectionString, { useNewUrlParser: true, useCreateIndex: true }),
     UserModule,
     PublicationModule
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+  ]
 })
 export class AppModule {
-
   static host: string;
   static port: string | number;
   static isDev: boolean;

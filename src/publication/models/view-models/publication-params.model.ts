@@ -1,4 +1,5 @@
 import { ApiModelProperty, ApiModelPropertyOptional } from "@nestjs/swagger";
+import { UserResumeVm } from "src/user/models/view-models/user-resume-vm.model";
 
 export class PublicationParams {
     @ApiModelProperty()
@@ -6,4 +7,6 @@ export class PublicationParams {
 
     @ApiModelPropertyOptional()
     imagePath: string;
+
+    user: UserResumeVm;
 }
