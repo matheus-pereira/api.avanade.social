@@ -1,5 +1,5 @@
-import { Controller, Post, HttpStatus, Body, HttpException } from '@nestjs/common';
-import { ApiUseTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
+import { Controller, Post, HttpStatus, Body, HttpException, UseGuards, Get, Param } from '@nestjs/common';
+import { ApiUseTags, ApiResponse, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 
 import { User } from './models/user.model';
 import { UserService } from './user.service';
@@ -9,6 +9,7 @@ import { GetOperationId } from 'src/shared/utilities/get-operation-id';
 import { LoginResponseVm } from './models/view-models/login-response-vm.model';
 import { ApiException } from 'src/shared/api-exception.model';
 import { LoginVm } from './models/view-models/login-vm.model';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 @ApiUseTags(User.modelName)
@@ -57,5 +58,26 @@ export class UserController {
         });
 
         return this._userService.login(loginVm);
+    }
+
+    @Get(':id')
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard('jwt'))
+    @ApiResponse({ status: HttpStatus.CREATED, type: LoginResponseVm })
+    @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
+    @ApiOperation(GetOperationId(User.modelName, 'Get'))
+    async get(@Param('id') id: string) {
+        try {
+            const user = await this._userService.findById(id);
+
+            if (!user) {
+                throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+            }
+
+            const userVm: UserVm = await this._userService.map<UserVm>(user.toJSON());
+            return userVm;
+        } catch(e) {
+            throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

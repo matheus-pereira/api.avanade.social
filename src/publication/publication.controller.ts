@@ -11,8 +11,8 @@ import { map } from 'lodash';
 import { IsDate } from 'src/shared/utilities/is-date';
 import { User } from 'src/user/models/user.model';
 
-@UseGuards(AuthGuard('jwt'))
 @Controller('publications')
+@UseGuards(AuthGuard('jwt'))
 @ApiUseTags(Publication.modelName)
 @ApiBearerAuth()
 export class PublicationController {
@@ -40,7 +40,6 @@ export class PublicationController {
     }
 
     @Get()
-    @UseGuards(AuthGuard('jwt'))
     @ApiResponse({ status: HttpStatus.OK, type: PublicationVm, isArray: true })
     @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
     @ApiOperation(GetOperationId(Publication.modelName, 'GetAll'))
@@ -77,7 +76,9 @@ export class PublicationController {
     }
 
     @Put(':id/like')
-    @UseGuards(AuthGuard('jwt'))
+    @ApiResponse({ status: HttpStatus.CREATED, type: PublicationVm })
+    @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
+    @ApiOperation(GetOperationId(Publication.modelName, 'Like'))
     async like(@Req() request, @Param('id') publicationId: string): Promise<PublicationVm> {
         const { user } = request;
 
@@ -89,7 +90,9 @@ export class PublicationController {
     }
 
     @Put(':id/unlike')
-    @UseGuards(AuthGuard('jwt'))
+    @ApiResponse({ status: HttpStatus.CREATED, type: PublicationVm })
+    @ApiResponse({ status: HttpStatus.BAD_REQUEST, type: ApiException })
+    @ApiOperation(GetOperationId(Publication.modelName, 'Unlike'))
     async unlike(@Req() request, @Param('id') publicationId: string): Promise<PublicationVm> {
         const { user } = request;
 
