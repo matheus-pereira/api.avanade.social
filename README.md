@@ -28,3 +28,7 @@ $ npm run start
 ## Database
 
 You can use the default hosted MongoDB database or change to your localhost. You'll find a dump at database/dump.
+
+```bash
+$ mongorestore -h <host> -d avanade-social -u <user> -p <password> <input db directory>
+```
