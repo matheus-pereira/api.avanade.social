@@ -76,7 +76,7 @@ export class UserService extends BaseService<User> {
             id: user.id,
             email: user.email,
             avatar: user.avatar,
-            name: user.firstName
+            name: user.fullName
         };
 
         const token = await this._authService.signPayload(payload);
