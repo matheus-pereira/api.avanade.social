@@ -1,5 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as morgan from 'morgan';
+import { createWriteStream } from 'fs';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './shared/filters/http-exception.filter';
 
@@ -33,6 +35,10 @@ async function bootstrap() {
       showRequestDuration: true
     }
   });
+
+  app.use(morgan('combined', {
+    stream: createWriteStream('./logs/log.txt')
+  }))
 
   app.setGlobalPrefix('api');
   app.useGlobalFilters(new HttpExceptionFilter());
