@@ -32,19 +32,23 @@ export class UserService extends BaseService<User> {
         newUser.email = email;
         newUser.firstName = firstName;
         newUser.lastName = lastName;
+        newUser.avatar = 'https://storage.googleapis.com/avanade-social/users/deafult_avatar.jpg';
 
         const salt = await genSalt(10);
         newUser.password = await hash(password, salt);
 
         try {
-            const result = await this.create(newUser);
+            const user = await this.create(newUser);
 
             const payload: JwtPayload = {
-                email: newUser.email
+                id: user.id,
+                email: user.email,
+                avatar: user.avatar,
+                name: user.fullName
             };
     
             const token = await this._authService.signPayload(payload);
-            const userVm: UserVm = await this.map<UserVm>(result.toJSON());
+            const userVm: UserVm = await this.map<UserVm>(user.toJSON());
             return {
                 token,
                 user: userVm
@@ -69,7 +73,10 @@ export class UserService extends BaseService<User> {
         }
         
         const payload: JwtPayload = {
-            email: user.email
+            id: user.id,
+            email: user.email,
+            avatar: user.avatar,
+            name: user.firstName
         };
 
         const token = await this._authService.signPayload(payload);
