@@ -1,7 +1,6 @@
 import { prop, ModelType } from "typegoose";
-
-import { BaseModel, schemaOptions } from "src/shared/base.model";
-import { IsEmail } from "src/shared/utilities/is-email";
+import { BaseModel, schemaOptions } from "../../shared/base.model";
+import { IsEmail } from "../../shared/utilities/is-email";
 
 export class User extends BaseModel<User> {
     @prop({

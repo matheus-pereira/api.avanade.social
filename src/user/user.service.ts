@@ -3,15 +3,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ModelType } from 'typegoose';
 import { genSalt, hash, compare } from 'bcryptjs';
 
-import { BaseService } from 'src/shared/base.service';
 import { User } from './models/user.model';
-import { MapperService } from 'src/shared/mapper/mapper.service';
 import { RegisterVm } from './models/view-models/register-vm.model';
 import { LoginVm } from './models/view-models/login-vm.model';
 import { LoginResponseVm } from './models/view-models/login-response-vm.model';
-import { JwtPayload } from 'src/shared/auth/jwt-payload';
-import { AuthService } from 'src/shared/auth/auth.service';
 import { UserVm } from './models/view-models/user-vm.model';
+import { AuthService } from '../shared/auth/auth.service';
+import { JwtPayload } from '../shared/auth/jwt-payload';
+import { BaseService } from '../shared/base.service';
+import { MapperService } from '../shared/mapper/mapper.service';
 
 @Injectable()
 export class UserService extends BaseService<User> {

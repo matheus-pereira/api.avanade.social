@@ -1,13 +1,13 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { ModelType } from 'typegoose';
 
-import { MapperService } from 'src/shared/mapper/mapper.service';
-import { BaseService } from 'src/shared/base.service';
 import { Publication } from './models/publication.model';
-import { UserResumeVm } from 'src/user/models/view-models/user-resume-vm.model';
-import { UserService } from 'src/user/user.service';
-import { User } from 'src/user/models/user.model';
+import { BaseService } from '../shared/base.service';
+import { UserService } from '../user/user.service';
+import { MapperService } from '../shared/mapper/mapper.service';
+import { ModelType } from 'typegoose';
+import { User } from '../user/models/user.model';
+import { UserResumeVm } from '../user/models/view-models/user-resume-vm.model';
 
 @Injectable()
 export class PublicationService extends BaseService<Publication> {

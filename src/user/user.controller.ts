@@ -5,11 +5,11 @@ import { User } from './models/user.model';
 import { UserService } from './user.service';
 import { RegisterVm } from './models/view-models/register-vm.model';
 import { UserVm } from './models/view-models/user-vm.model';
-import { GetOperationId } from 'src/shared/utilities/get-operation-id';
 import { LoginResponseVm } from './models/view-models/login-response-vm.model';
-import { ApiException } from 'src/shared/api-exception.model';
 import { LoginVm } from './models/view-models/login-vm.model';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiException } from '../shared/api-exception.model';
+import { GetOperationId } from '../shared/utilities/get-operation-id';
 
 @Controller('users')
 @ApiUseTags(User.modelName)

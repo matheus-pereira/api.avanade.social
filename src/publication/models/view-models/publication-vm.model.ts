@@ -1,6 +1,6 @@
-import { BaseModelVm } from "src/shared/base.model";
 import { ApiModelProperty, ApiModelPropertyOptional } from "@nestjs/swagger";
-import { UserResumeVm } from "src/user/models/view-models/user-resume-vm.model";
+import { UserResumeVm } from "../../../user/models/view-models/user-resume-vm.model";
+import { BaseModelVm } from "../../../shared/base.model";
 
 export class PublicationVm extends BaseModelVm {
     @ApiModelProperty()
