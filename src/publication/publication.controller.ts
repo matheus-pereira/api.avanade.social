@@ -1,15 +1,15 @@
-import { Controller, Post, HttpStatus, Delete, Get, Put, Param, Body, HttpException, Query, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, HttpStatus, Get, Put, Param, Body, HttpException, Query, UseGuards, Req } from '@nestjs/common';
 import { ApiUseTags, ApiResponse, ApiOperation, ApiImplicitQuery, ApiBearerAuth } from '@nestjs/swagger';
-import { ApiException } from 'src/shared/api-exception.model';
-import { GetOperationId } from 'src/shared/utilities/get-operation-id';
 import { AuthGuard } from '@nestjs/passport';
 import { Publication } from './models/publication.model';
 import { PublicationService } from './publication.service';
 import { PublicationVm } from './models/view-models/publication-vm.model';
 import { PublicationParams } from './models/view-models/publication-params.model';
 import { map } from 'lodash';
-import { IsDate } from 'src/shared/utilities/is-date';
-import { User } from 'src/user/models/user.model';
+import { ApiException } from '../shared/api-exception.model';
+import { GetOperationId } from '../shared/utilities/get-operation-id';
+import { User } from '../user/models/user.model';
+import { IsDate } from '../shared/utilities/is-date';
 
 @Controller('publications')
 @UseGuards(AuthGuard('jwt'))

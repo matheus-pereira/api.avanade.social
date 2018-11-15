@@ -3,9 +3,9 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt, VerifiedCallback } from 'passport-jwt';
 
 import { AuthService } from '../auth.service';
-import { ConfigurationService } from 'src/shared/configuration/configuration.service';
-import { Configuration } from 'src/shared/configuration/configuration.enum';
 import { JwtPayload } from '../jwt-payload';
+import { ConfigurationService } from '../../configuration/configuration.service';
+import { Configuration } from '../../configuration/configuration.enum';
 
 @Injectable()
 export class JwtStrategyService extends PassportStrategy(Strategy) {
